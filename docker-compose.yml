@@ -1,19 +1,24 @@
-version: '3'
 services:
   app1:
     build: ./app1
+    # Оба backend-сервиса используют единый внутренний порт, на который настроен nginx.
+    expose:
+      - "8080"
     volumes:
       - ./storage:/storage:ro
 
   app2:
     build: ./app2
+    expose:
+      - "8080"
     volumes:
       - ./storage:/storage:ro
 
   nginx:
     build: ./nginx
     ports:
-    - "445:445"
+      # HTTPS доступен по адресу из README: https://localhost.
+      - "443:443"
     depends_on:
       - app1
       - app2
